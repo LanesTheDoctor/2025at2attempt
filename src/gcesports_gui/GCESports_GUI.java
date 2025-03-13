@@ -52,6 +52,9 @@ public class GCESports_GUI extends javax.swing.JFrame
         
         initComponents();
         
+        compResultsTableModel = new DefaultTableModel(null, columnNames_Results);
+        teamCompResults_JTable.setModel(compResultsTableModel);
+        
         resizeTableColumns();
         
         readCompetitionData();
