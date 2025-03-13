@@ -29,6 +29,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import java.awt.event.ItemEvent;
+import java.util.Map;
+import java.util.HashMap;
 
 
 public class GCESports_GUI extends javax.swing.JFrame 
@@ -342,8 +344,45 @@ public class GCESports_GUI extends javax.swing.JFrame
 
     private void displayLeaderboard()
     {
-        String leaderBoardDisplayStr = "TEAM\t\tTotal Points";
-        JOptionPane.showMessageDialog(null, leaderBoardDisplayStr, "TEAMS LEADER BOARD", JOptionPane.INFORMATION_MESSAGE);
+//        String leaderBoardDisplayStr = "TEAM\t\tTotal Points";
+//        JOptionPane.showMessageDialog(null, leaderBoardDisplayStr, "TEAMS LEADER BOARD", JOptionPane.INFORMATION_MESSAGE);
+        Map<String, Integer> teamPointsMap = new HashMap<>();
+        
+        for (Competition competition : competitionList)
+        {
+            String teamName = competition.getTeam();
+            int points = competition.getPoints();
+            
+            teamPointsMap.put(teamName, teamPointsMap.getOrDefault(teamName, 0) + points);
+        }
+        
+        String topTeam = null;
+        int highestPoints = -1;
+        
+        for (Map.Entry<String, Integer> entry : teamPointsMap.entrySet())
+        {
+            String teamName = entry.getKey();
+            int totalPoints = entry.getValue();
+            
+            if (totalPoints > highestPoints)
+            {
+                highestPoints = totalPoints;
+                topTeam = teamName;
+            }
+        }
+        
+        String leaderBoardDisplayStr = "";
+        if (topTeam != null)
+        {
+            leaderBoardDisplayStr += "The highest scoring team is " + topTeam + " with " + highestPoints + " points!";
+        }
+        
+        else
+        {
+            leaderBoardDisplayStr += "No teams available.";
+        }
+        
+        JOptionPane.showMessageDialog(null, leaderBoardDisplayStr, "Teams Leaderboard.", JOptionPane.INFORMATION_MESSAGE);
     }
     
     private boolean validateNewComp()
